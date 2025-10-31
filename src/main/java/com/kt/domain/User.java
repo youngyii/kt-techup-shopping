@@ -1,6 +1,7 @@
 package com.kt.domain; // 비즈니스에서 다루는 유저 모델 - DB에 저장될 형태
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,6 +18,6 @@ public class User {
 	private String mobile;
 	private Gender gender;
 	private LocalDate birthday;
-	private LocalDate createdAt;
-	private LocalDate updatedAt;
+	private LocalDateTime createdAt;
+	private LocalDateTime updatedAt;
 }
