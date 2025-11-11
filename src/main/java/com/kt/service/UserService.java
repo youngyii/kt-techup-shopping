@@ -30,5 +30,7 @@ public class UserService {
 		userRepository.save(newUser);
 	}
 
-	// TODO: 아이디 중복 검사 만들기
+	public boolean isDuplicateLoginId(String loginId) {
+        return userRepository.existsByLoginId(loginId);
+    }
 }
