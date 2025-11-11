@@ -1,10 +1,7 @@
 package com.kt.controller; // 클라이언트 요청 처리
 
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 
 import com.kt.dto.UserCreateRequest;
 import com.kt.service.UserService;
@@ -18,6 +15,11 @@ import lombok.RequiredArgsConstructor;
 @Tag(name = "유저", description = "유저 관련 API")
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/users")
+@ApiResponses(value = {
+        @ApiResponse(responseCode = "400", description = "유효성 검사 실패"),
+        @ApiResponse(responseCode = "500", description = "서버 에러 - 백엔드에 바로 문의 바랍니다.")
+})
 public class UserController {
 	// userservice를 DI 받아야 함
 	// DI 받는 방식: *생성자 주입* 재할당을 금지함
@@ -32,11 +34,6 @@ public class UserController {
     // 장점: 프로덕션 코드 침범 없다, 신뢰할 수 있다
     // 단점: UI가 안 예쁘다, 테스트 코드로 작성해야 해서 시간이 오래걸린다
 
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "400", description = "유효성 검사 실패"),
-            @ApiResponse(responseCode = "500", description = "서버 에러 - 백엔드에 바로 문의 바랍니다.")
-    })
-	@PostMapping("/users")
 	@ResponseStatus(HttpStatus.CREATED)
 
 	// loginId, password, name, birthday
@@ -46,4 +43,16 @@ public class UserController {
 		// jackson object mapper -> json to dto를 매핑
 		userService.create(request); // 요청 들어오면 userService.create()로 위임
 	}
+
+    /*
+    /users/duplicate-login-id?loginId=ktuser
+    GET에서 쓰는 queryString(?loginId=ktuser -> 파라미터 loginId를 ktuser 값으로 서버에 전달)
+    @RequestParam의 속성은 기본값이 required = true
+    IlleagalArgumentException 발생 시 400 에러(loginId가 없거나 비정상이면)
+     */
+    @GetMapping
+    @ResponseStatus(HttpStatus.OK)
+    public Boolean isDuplicateLoginId(@RequestParam String loginId) {
+        return userService.isDuplicateLoginId(loginId);
+    }
 }
