@@ -2,8 +2,15 @@ package com.kt.controller; // 클라이언트 요청 처리
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.kt.dto.UserCreateRequest;
+import com.kt.dto.UserUpdatePasswordRequest;
 import com.kt.service.UserService;
 
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -54,5 +61,23 @@ public class UserController {
     @ResponseStatus(HttpStatus.OK)
     public Boolean isDuplicateLoginId(@RequestParam String loginId) {
         return userService.isDuplicateLoginId(loginId);
+    }
+
+    /* URI 설계 원칙: 리소스(유저)를 명확히 식별할 수 있어야 한다.
+    예) /users → 모든 유저 (식별 불가)
+        /users/{id} → 특정 유저 (식별 가능)
+
+    비밀번호 변경 API 설계 방법
+    1. body(JSON)에 id 포함 → REST스럽지 않음
+    2. uri에 id 포함 (/users/{id}/update-password) → 명확함
+    3. 인증 객체(SecurityContext 등)에서 id 추출 → 권장
+     */
+    @PutMapping("/{id}/update-password")
+    @ResponseStatus(HttpStatus.OK)
+    public void updatePassword(
+            @PathVariable Integer id,
+            @RequestBody @Valid UserUpdatePasswordRequest request
+    ) {
+        userService.changePassword(id, request.oldPassword(), request.newPassword());
     }
 }
