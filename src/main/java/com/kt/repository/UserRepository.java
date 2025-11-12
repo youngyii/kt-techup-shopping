@@ -1,6 +1,7 @@
 package com.kt.repository; // 데이터베이스 접근(SQL 실행)
 
 import com.kt.domain.Gender;
+import com.kt.dto.CustomPage;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -89,9 +90,30 @@ public class UserRepository {
          return list.stream().findFirst();
     }
 
+    // 회원 목록을 페이지 단위로 조회
+    public CustomPage selectAll(int page, int size) {
+         // offset: 몇 개를 건너뛸지 결정 ((page - 1) * size)
+         var sql = "SELECT * FROM MEMBER LIMIT ? OFFSET ?";
+         var users = jdbcTemplate.query(sql, rowMapper(), page, size);
+
+         var countSql = "SELECT COUNT(*) FROM MEMBER";
+         var totalElements = jdbcTemplate.queryForObject(countSql, Long.class);
+
+         var pages = (int) Math.ceil((double) totalElements / size);
+
+         return new CustomPage(
+                 users,
+                 size,
+                 page,
+                 pages,
+                 totalElements
+         );
+    }
+
     // ResultSet에서 데이터를 꺼내 User 객채로 매핑
     private RowMapper<User> rowMapper() {
          return (rs, rowNum) -> mapToUser(rs);
+        // return (rs, rowNum) -> { return mapToUser(rs); };와 동일 (단일 실행문 -> { }와 return 생략)
     }
 
     private User mapToUser(ResultSet rs) throws SQLException {
