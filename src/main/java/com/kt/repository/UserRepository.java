@@ -2,16 +2,20 @@ package com.kt.repository; // 데이터베이스 접근(SQL 실행)
 
 import com.kt.domain.Gender;
 import com.kt.dto.CustomPage;
-import org.springframework.jdbc.core.RowMapper;
-import org.springframework.stereotype.Repository;
-import org.springframework.jdbc.core.JdbcTemplate;
 import com.kt.domain.User;
+
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Repository;
+import org.springframework.data.util.Pair;
+
 import lombok.RequiredArgsConstructor;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -91,7 +95,7 @@ public class UserRepository {
     }
 
     // 회원 목록을 페이지 단위로 조회
-    public CustomPage selectAll(int page, int size) {
+    public Pair<List<User>, Long> selectAll(int page, int size) {
          // offset: 몇 개를 건너뛸지 결정 ((page - 1) * size)
          var sql = "SELECT * FROM MEMBER LIMIT ? OFFSET ?";
          var users = jdbcTemplate.query(sql, rowMapper(), page, size);
@@ -99,15 +103,7 @@ public class UserRepository {
          var countSql = "SELECT COUNT(*) FROM MEMBER";
          var totalElements = jdbcTemplate.queryForObject(countSql, Long.class);
 
-         var pages = (int) Math.ceil((double) totalElements / size);
-
-         return new CustomPage(
-                 users,
-                 size,
-                 page,
-                 pages,
-                 totalElements
-         );
+         return Pair.of(users, totalElements);
     }
 
     // ResultSet에서 데이터를 꺼내 User 객채로 매핑
