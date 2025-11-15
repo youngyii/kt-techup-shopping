@@ -107,6 +107,12 @@ public class UserRepository {
          return Pair.of(users, totalElements);
     }
 
+    public void updateById(Long id, String name, String email, String mobile) {
+         var sql = "UPDATE MEMBER SET name = ?, email = ?, mobile = ? WHERE id = ?";
+
+         jdbcTemplate.update(sql, name, email, mobile, id);
+    }
+
     // ResultSet에서 데이터를 꺼내 User 객채로 매핑
     private RowMapper<User> rowMapper() {
          return (rs, rowNum) -> mapToUser(rs);
