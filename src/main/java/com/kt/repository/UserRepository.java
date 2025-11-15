@@ -95,13 +95,14 @@ public class UserRepository {
     }
 
     // 회원 목록을 페이지 단위로 조회
-    public Pair<List<User>, Long> selectAll(int page, int size) {
+    public Pair<List<User>, Long> selectAll(int page, int size, String keyword) {
          // offset: 몇 개를 건너뛸지 결정 ((page - 1) * size)
-         var sql = "SELECT * FROM MEMBER LIMIT ? OFFSET ?";
-         var users = jdbcTemplate.query(sql, rowMapper(), page, size);
+         // 키워드 검색 = LIKE %keyword% (포함) keyword% (시작하는) %keyword (끝나는)
+         var sql = "SELECT * FROM MEMBER WHERE name LIKE CONCAT('%', ? , '%') LIMIT ? OFFSET ?";
+         var users = jdbcTemplate.query(sql, rowMapper(), keyword, size, page);
 
-         var countSql = "SELECT COUNT(*) FROM MEMBER";
-         var totalElements = jdbcTemplate.queryForObject(countSql, Long.class);
+         var countSql = "SELECT COUNT(*) FROM MEMBER WHERE name LIKE CONCAT('%', ? , '%')";
+         var totalElements = jdbcTemplate.queryForObject(countSql, Long.class, keyword);
 
          return Pair.of(users, totalElements);
     }
@@ -113,6 +114,7 @@ public class UserRepository {
     }
 
     private User mapToUser(ResultSet rs) throws SQLException {
+         System.out.println("mapToUser called");
          return new User(
                  rs.getLong("id"),
                  rs.getString("loginId"),
