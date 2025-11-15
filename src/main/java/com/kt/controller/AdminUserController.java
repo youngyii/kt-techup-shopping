@@ -1,5 +1,6 @@
 package com.kt.controller;
 
+import com.kt.domain.User;
 import com.kt.dto.CustomPage;
 import com.kt.dto.UserUpdateRequest;
 import com.kt.service.UserService;
@@ -29,6 +30,11 @@ public class AdminUserController {
     }
 
     // 유저 상세 조회
+    @GetMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public User detail(@PathVariable Long id) {
+        return userService.detail(id);
+    }
 
     // 유저 정보 수정
     @PutMapping("/{id}")
