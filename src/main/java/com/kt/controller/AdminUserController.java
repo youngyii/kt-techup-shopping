@@ -1,11 +1,12 @@
 package com.kt.controller;
 
 import com.kt.domain.User;
-import com.kt.dto.CustomPage;
 import com.kt.dto.UserUpdateRequest;
 import com.kt.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,12 +27,12 @@ public class AdminUserController {
      */
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public CustomPage search(
+    public Page<User> search(
             @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "10") int size,
             @RequestParam(required = false) String keyword
     ) {
-        return userService.search(page, size, keyword);
+        return userService.search(PageRequest.of(page - 1, size), keyword);
     }
 
     /**
