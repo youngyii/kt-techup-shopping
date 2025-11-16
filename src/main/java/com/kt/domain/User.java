@@ -22,8 +22,9 @@ public class User {
     private String email;
     private String mobile;
     @Enumerated(EnumType.STRING)
-    /* ORDINAL - 열거형 상수의 순서(인덱스)를 숫자로 저장
-     * STRING - 열거형 상수의 이름을 문자열로 저장 */
+    /* ORDINAL - 열거형 상수의 순서를 숫자로 저장 (기본값, 데이터 훼손 가능성)
+     * STRING - 열거형 상수의 이름을 문자열로 저장 (안전)
+     */
     private Gender gender;
     private LocalDate birthday;
     private LocalDateTime createdAt;

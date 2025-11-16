@@ -33,6 +33,7 @@ public class AdminUserController {
             @RequestParam(required = false) String keyword
     ) {
         return userService.search(PageRequest.of(page - 1, size), keyword);
+        // Pageable: interface / PageRequest: 구현체
     }
 
     /**
