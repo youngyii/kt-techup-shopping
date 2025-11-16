@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
-// DB 접근 Repository
+// JDBC Repository
 // 기능: User 도메인 객체 저장/조회/수정/삭제, SQL 실행 및 결과 매핑
 @Repository
 @RequiredArgsConstructor
