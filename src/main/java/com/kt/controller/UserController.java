@@ -34,7 +34,7 @@ public class UserController {
      * 예: POST /users (body: UserCreateRequest JSON)
      * 요청 JSON은 Jackson이 DTO로 매핑하며 비스니스 로직은 Service에서 처리
      */
-    // FIXME: @PostMapping
+    @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public void create(@RequestBody @Valid UserCreateRequest request) {
         userService.create(request);
@@ -45,8 +45,7 @@ public class UserController {
      * 예: /users/duplicate-login-id?loginId=ktuser
      * @RequestParam 은 기본적으로 required = true
      */
-    // FIXME: @GetMapping("/duplicate-login-id")
-    @GetMapping
+    @GetMapping("/duplicate-login-id")
     @ResponseStatus(HttpStatus.OK)
     public Boolean isDuplicateLoginId(@RequestParam String loginId) {
         return userService.isDuplicateLoginId(loginId);
