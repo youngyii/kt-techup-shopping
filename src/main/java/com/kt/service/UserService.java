@@ -3,9 +3,11 @@ package com.kt.service;
 import com.kt.domain.User;
 import com.kt.dto.CustomPage;
 import com.kt.dto.UserCreateRequest;
+import com.kt.repository.UserJDBCRepository;
 import com.kt.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 
@@ -14,15 +16,16 @@ import java.time.LocalDateTime;
 //      유저 목록 조회, 상세 조회, 정보 수정
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class UserService {
+    private final UserJDBCRepository userJDBCRepository;
     private final UserRepository userRepository;
 
     /**
      * 회원가입
-      */
+     */
     public void create(UserCreateRequest request) {
         var newUser = new User(
-                userRepository.selectMaxId() + 1,
                 request.loginId(),
                 request.password(),
                 request.name(),
@@ -39,7 +42,7 @@ public class UserService {
 
     /**
      * 로그인 ID 중복 체크
-      */
+     */
     public boolean isDuplicateLoginId(String loginId) {
         return userRepository.existsByLoginId(loginId);
     }
@@ -47,8 +50,8 @@ public class UserService {
     /**
      * 비밀번호 변경
      */
-    public void changePassword(int id, String oldPassword, String password) {
-        var user = userRepository.selectById(id)
+    public void changePassword(Long id, String oldPassword, String password) {
+        var user = userRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
 
         if (!user.getPassword().equals(oldPassword)) {
@@ -59,14 +62,15 @@ public class UserService {
             throw new IllegalArgumentException("기존 비밀번호와 동일한 비밀번호로 변경할 수 없습니다.");
         }
 
-        userRepository.updatePassword(id, password);
+        user.changePassword(password);
     }
 
     /**
      * 유저 목록 조회 (페이징+검색)
      */
     public CustomPage search(int page, int size, String keyword) {
-        var pair = userRepository.selectAll(page - 1, size, keyword);
+        // TODO: Pageable 인터페이스 적용
+        var pair = userJDBCRepository.selectAll(page - 1, size, keyword);
         var pages = (int) Math.ceil((double) pair.getSecond() / size);
 
         return new CustomPage(
@@ -82,7 +86,7 @@ public class UserService {
      * 유저 상세 조회
      */
     public User detail(Long id) {
-        return userRepository.selectById(id)
+        return userRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
     }
 
@@ -90,9 +94,9 @@ public class UserService {
      * 유저 정보 수정
      */
     public void update(Long id, String name, String email, String mobile) {
-        userRepository.selectById(id)
+        var user = userRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
 
-        userRepository.updateById(id, name, email, mobile);
+        user.update(name, email, mobile);
     }
 }

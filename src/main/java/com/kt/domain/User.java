@@ -29,9 +29,8 @@ public class User {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    public User(Long id, String loginId, String password, String name, String email, String mobile, Gender gender,
+    public User(String loginId, String password, String name, String email, String mobile, Gender gender,
                 LocalDate birthday, LocalDateTime createdAt, LocalDateTime updatedAt) {
-        this.id = id;
         this.loginId = loginId;
         this.password = password;
         this.name = name;
