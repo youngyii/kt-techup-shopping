@@ -1,9 +1,24 @@
 spring:
-  h2:
-    console:
-      enabled: true
   datasource:
-    url: jdbc:h2:~/test
-    username: sa
-    password:
-    driver-class-name: org.h2.Driver
+    url: jdbc:mysql://localhost:3306/shopping
+    username: root
+    password: 1234
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    jpa:
+      hibernate:
+        # DDL 자동 생성
+        # create : 테이블 새로 생성 (기존 테이블 삭제)
+        # update : 테이블 없으면 생성, 있으면 엔티티와 다를 경우 수정 (삭제는 안됨)
+        # validate : 엔티티와 테이블 일치 여부 검증만 수행
+        # none : DDL 자동 생성 사용 안함
+        # create-drop create와 동일하지만 애플리케이션 종료 시 테이블 삭제 (테스트용)
+        ddl-auto: update
+
+      properties:
+        hibernate:
+          format_sql: true
+          dialect: org.hibernate.dialect.MySQLDialect
+          jdbc:
+            time_zone: Asia/Seoul
+          show_sql: true # SQL 로그 출력 -> 로컬 개발 환경에서만 사용(보안)
+      show-sql: true
