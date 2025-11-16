@@ -1,9 +1,6 @@
 package com.kt.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -24,6 +21,9 @@ public class User {
     private String name;
     private String email;
     private String mobile;
+    @Enumerated(EnumType.STRING)
+    /* ORDINAL - 열거형 상수의 순서(인덱스)를 숫자로 저장
+     * STRING - 열거형 상수의 이름을 문자열로 저장 */
     private Gender gender;
     private LocalDate birthday;
     private LocalDateTime createdAt;

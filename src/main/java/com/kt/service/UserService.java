@@ -1,11 +1,11 @@
 package com.kt.service;
 
 import com.kt.domain.User;
-import com.kt.dto.CustomPage;
 import com.kt.dto.UserCreateRequest;
-import com.kt.repository.UserJDBCRepository;
 import com.kt.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 @Transactional
 public class UserService {
-    private final UserJDBCRepository userJDBCRepository;
+    //private final UserJDBCRepository userJDBCRepository;
     private final UserRepository userRepository;
 
     /**
@@ -68,18 +68,8 @@ public class UserService {
     /**
      * 유저 목록 조회 (페이징+검색)
      */
-    public CustomPage search(int page, int size, String keyword) {
-        // TODO: Pageable 인터페이스 적용
-        var pair = userJDBCRepository.selectAll(page - 1, size, keyword);
-        var pages = (int) Math.ceil((double) pair.getSecond() / size);
-
-        return new CustomPage(
-                pair.getFirst(),
-                size,
-                page,
-                pages,
-                pair.getSecond()
-        );
+    public Page<User> search(Pageable pageable, String keyword) {
+        return userRepository.findAllByNameContaining(keyword, pageable);
     }
 
     /**

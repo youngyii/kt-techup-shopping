@@ -1,9 +1,10 @@
 package com.kt.repository;
 
+import com.kt.domain.User;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-
-import com.kt.domain.User;
 
 // JPA Repository
 // 기능: CRUD 등 기본 메서드 자동 제공, JPQL 작성 지원
@@ -26,4 +27,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
             SELECT exists (SELECT u FROM User u WHERE u.loginId = ?1)
             """)
     Boolean existsByLoginIdJPQL(String loginId);
+
+    Page<User> findAllByNameContaining(String name, Pageable pageable);
 }
