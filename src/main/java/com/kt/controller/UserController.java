@@ -12,7 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 // 일반 사용자(User) 관련 API를 제공하는 Controller
-// 기능: 회원가입, 로그인 ID 중복 체크, 비밀번호 변경
+// 기능: 회원가입, 로그인 ID 중복 체크, 비밀번호 변경, 유저 삭제
 @Tag(name = "유저", description = "유저 관련 API")
 @RestController
 @RequiredArgsConstructor
@@ -59,7 +59,7 @@ public class UserController {
     @PutMapping("/{id}/update-password")
     @ResponseStatus(HttpStatus.OK)
     public void updatePassword(
-            @PathVariable Integer id,
+            @PathVariable Long id,
             @RequestBody @Valid UserUpdatePasswordRequest request
     ) {
         userService.changePassword(id, request.oldPassword(), request.newPassword());
@@ -72,5 +72,14 @@ public class UserController {
         2) uri에 id 포함 (/users/{id}/update-password) → 명확
         3) 인증 객체(SecurityContext 등)에서 id 추출 → 권장
         */
+    }
+
+    /**
+     * 유저 삭제
+     */
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public void delete(@PathVariable Long id) {
+        userService.delete(id);
     }
 }
