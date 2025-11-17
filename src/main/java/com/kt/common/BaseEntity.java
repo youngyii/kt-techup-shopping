@@ -6,7 +6,7 @@ import jakarta.persistence.Id;
 
 import java.time.LocalDateTime;
 
-// 유저 정보를 DB와 매핑하는 JPA 엔티티
+// 공통 베이스 엔티티
 public abstract class BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
