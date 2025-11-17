@@ -1,6 +1,6 @@
 package com.kt.service;
 
-import com.kt.domain.User;
+import com.kt.domain.user.User;
 import com.kt.dto.UserCreateRequest;
 import com.kt.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
