@@ -1,6 +1,9 @@
 package com.kt.domain.user;
 
-import jakarta.persistence.*;
+import com.kt.common.BaseEntity;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -12,10 +15,7 @@ import java.time.LocalDateTime;
 @Getter
 @NoArgsConstructor
 @Entity
-public class User {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class User extends BaseEntity {
     private String loginId;
     private String password;
     private String name;
@@ -27,8 +27,6 @@ public class User {
      */
     private Gender gender;
     private LocalDate birthday;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
 
     public User(String loginId, String password, String name, String email, String mobile, Gender gender,
                 LocalDate birthday, LocalDateTime createdAt, LocalDateTime updatedAt) {
