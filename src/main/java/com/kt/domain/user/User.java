@@ -1,4 +1,4 @@
-package com.kt.domain;
+package com.kt.domain.user;
 
 import jakarta.persistence.*;
 import lombok.Getter;

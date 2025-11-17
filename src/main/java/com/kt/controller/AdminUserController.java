@@ -1,6 +1,6 @@
 package com.kt.controller;
 
-import com.kt.domain.User;
+import com.kt.domain.user.User;
 import com.kt.dto.UserUpdateRequest;
 import com.kt.service.UserService;
 import jakarta.validation.Valid;

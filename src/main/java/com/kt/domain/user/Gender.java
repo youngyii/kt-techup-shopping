@@ -1,4 +1,4 @@
-package com.kt.domain;
+package com.kt.domain.user;
 
 // 성별 구분용 Enum
 public enum Gender {
