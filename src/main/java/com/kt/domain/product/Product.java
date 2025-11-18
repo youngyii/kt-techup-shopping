@@ -1,9 +1,14 @@
 package com.kt.domain.product;
 
 import com.kt.common.BaseEntity;
+import com.kt.domain.orderproduct.OrderProduct;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.OneToMany;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Product extends BaseEntity {
@@ -12,6 +17,9 @@ public class Product extends BaseEntity {
     private Long stock;
     @Enumerated(EnumType.STRING)
     private ProductStatus status;
+
+    @OneToMany(mappedBy = "product")
+    private List<OrderProduct> orderProducts = new ArrayList<>();
 
     // TODO: 생성
     // TODO: 수정

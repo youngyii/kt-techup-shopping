@@ -1,14 +1,18 @@
 package com.kt.domain.user;
 
 import com.kt.common.BaseEntity;
+import com.kt.domain.order.Order;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.OneToMany;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 // 유저 정보를 DB와 매핑하는 JPA 엔티티
 // 기능: 유저 데이터 보관, 비밀번호 변경, 정보 수정 등 도메인 행위 제공
@@ -27,6 +31,9 @@ public class User extends BaseEntity {
      */
     private Gender gender;
     private LocalDate birthday;
+
+    @OneToMany(mappedBy = "user")
+    private List<Order> orders = new ArrayList<>();
 
     public User(String loginId, String password, String name, String email, String mobile, Gender gender,
                 LocalDate birthday, LocalDateTime createdAt, LocalDateTime updatedAt) {
