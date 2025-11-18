@@ -14,9 +14,8 @@ import java.util.List;
 @Entity
 @Table(name = "orders")
 public class Order extends BaseEntity {
-    private String receiverName;
-    private String receiverAdress;
-    private String receiverMobile;
+    @Embedded
+    private Receiver receiver;
     @Enumerated(EnumType.STRING)
     private OrderStatus status;
     private LocalDateTime deliveredAt;
