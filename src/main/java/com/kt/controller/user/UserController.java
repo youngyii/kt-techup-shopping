@@ -1,7 +1,7 @@
 package com.kt.controller.user;
 
-import com.kt.dto.UserCreateRequest;
-import com.kt.dto.UserUpdatePasswordRequest;
+import com.kt.dto.user.UserCreateRequest;
+import com.kt.dto.user.UserUpdatePasswordRequest;
 import com.kt.service.UserService;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
