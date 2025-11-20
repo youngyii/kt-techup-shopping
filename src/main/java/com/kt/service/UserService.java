@@ -1,7 +1,7 @@
 package com.kt.service;
 
 import com.kt.domain.user.User;
-import com.kt.dto.UserCreateRequest;
+import com.kt.dto.user.UserCreateRequest;
 import com.kt.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
