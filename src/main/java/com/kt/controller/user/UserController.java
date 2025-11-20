@@ -1,4 +1,4 @@
-package com.kt.controller;
+package com.kt.controller.user;
 
 import com.kt.dto.UserCreateRequest;
 import com.kt.dto.UserUpdatePasswordRequest;
