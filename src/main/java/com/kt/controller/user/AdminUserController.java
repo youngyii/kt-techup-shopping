@@ -1,4 +1,4 @@
-package com.kt.controller;
+package com.kt.controller.user;
 
 import com.kt.domain.user.User;
 import com.kt.dto.UserUpdateRequest;
