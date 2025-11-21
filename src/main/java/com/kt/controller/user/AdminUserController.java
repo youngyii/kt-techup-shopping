@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/admin/users")
 @RequiredArgsConstructor
-public class AdminUserController {
+public class AdminUserController extends SwaggerAssistance {
     private final UserService userService;
 
     /**
