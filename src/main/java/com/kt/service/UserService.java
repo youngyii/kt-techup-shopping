@@ -1,7 +1,9 @@
 package com.kt.service;
 
+import com.kt.common.ErrorCode;
+import com.kt.common.Preconditions;
 import com.kt.domain.user.User;
-import com.kt.dto.user.UserCreateRequest;
+import com.kt.dto.user.UserRequest;
 import com.kt.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -24,7 +26,7 @@ public class UserService {
     /**
      * 회원가입
      */
-    public void create(UserCreateRequest request) {
+    public void create(UserRequest.Create request) {
         var newUser = new User(request.loginId(), request.password(), request.name(), request.email(), request.mobile(), request.gender(), request.birthday(), LocalDateTime.now(), LocalDateTime.now());
 
         userRepository.save(newUser);
@@ -41,15 +43,10 @@ public class UserService {
      * 비밀번호 변경
      */
     public void changePassword(Long id, String oldPassword, String password) {
-        var user = userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
+        var user = userRepository.findByIdOrThrow(id, ErrorCode.NOT_FOUND_USER);
 
-        if (!user.getPassword().equals(oldPassword)) {
-            throw new IllegalArgumentException("기존 비밀번호가 일치하지 않습니다.");
-        }
-
-        if (oldPassword.equals(password)) {
-            throw new IllegalArgumentException("기존 비밀번호와 동일한 비밀번호로 변경할 수 없습니다.");
-        }
+        Preconditions.validate(user.getPassword().equals(oldPassword), ErrorCode.DOES_NOT_MATCH_OLD_PASSWORD);
+        Preconditions.validate(!oldPassword.equals(password), ErrorCode.CAN_NOT_ALLOWED_SAME_PASSWORD);
 
         user.changePassword(password);
     }
@@ -65,14 +62,14 @@ public class UserService {
      * 유저 상세 조회
      */
     public User detail(Long id) {
-        return userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
+        return userRepository.findByIdOrThrow(id, ErrorCode.NOT_FOUND_USER);
     }
 
     /**
      * 유저 정보 수정
      */
     public void update(Long id, String name, String email, String mobile) {
-        var user = userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
+        var user = userRepository.findByIdOrThrow(id, ErrorCode.NOT_FOUND_USER);
 
         user.update(name, email, mobile);
     }
