@@ -46,7 +46,7 @@ public class UserRequest {
     /* DTO의 기능을 응집시키는 방식 3가지
     1) 요청, 응답 각각 파일로 만드는 방식
         예: ProductCreateRequest.java, ProductUpdateRequest.java
-    2) static class로 묶기 -> 파일 개수 줄임, 관리 쉬움
-    3) 인터페이스로 묶기 (지금 코드) record -> 완전 불변으로 정의
+    2) static class로 묶기 -> record 완전 불변으로 정의
+    3) 인터페이스로 묶기
     */
 }
